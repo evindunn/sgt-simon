@@ -36,12 +36,13 @@ function create() {
   this.physics.world.bounds.height = gameVars.groundLayer.height;
 
   // Player
-  gameVars.player = this.physics.add.sprite(100, 100, "player");
+  gameVars.player = this.physics.add.sprite(64, GAME_HEIGHT / 2, "player");
   gameVars.player.setBounce(0.1);
   gameVars.player.setCollideWorldBounds(true);
 
   this.physics.add.collider(gameVars.groundLayer, gameVars.player);
 
+  // Player animation
   this.anims.create({
     key: "walk",
     frames: this.anims.generateFrameNumbers("player", { start: 1, end: 4 }),
@@ -57,9 +58,19 @@ function create() {
 
   this.anims.create({
     key: "jump",
-    frames: [ { key: "player", frame: 1 } ],
+    frames: [ { key: "player", frame: 2 } ],
     frameRate: 1,
   });
+
+  // Player starts off in the air facing right
+  gameVars.player.anims.play("jump", true);
+  gameVars.player.flipX = true;
+
+  // TODO: Bullets
+  gameVars.bullets = this.add.group();
+  // gameVars.bullets.createMultiple(50, "bullet");
+  // gameVars.bullets.setAll("checkWorldBounds", true);
+  // gameVars.bullets.setAll("outOfBoundsKill", true);
 
   // Controls
   gameVars.cursors = this.input.keyboard.createCursorKeys();
@@ -76,7 +87,7 @@ function create() {
 }
 
 function update() {
-  // Player
+  // Player controls
   if (gameVars.cursors.left.isDown && gameVars.player.body.onFloor()) {
     gameVars.player.setVelocityX(-200);
     gameVars.player.anims.play("walk", true);
@@ -88,16 +99,16 @@ function update() {
   } else if (gameVars.player.body.onFloor()) {
     gameVars.player.setVelocityX(0);
     gameVars.player.anims.play("stand", true);
-  } else {
-    gameVars.player.anims.play("jump", true);
   }
-
+  
   if (gameVars.cursors.up.isDown && gameVars.player.body.onFloor()) {
     gameVars.player.setVelocityY(-500);
+    gameVars.player.anims.play("jump", true);
   }
 }
 
 function main() {
+  // Game config
   let config = {
     type: Phaser.AUTO,
     width: GAME_WIDTH,
@@ -116,7 +127,8 @@ function main() {
     }
   };
 
-  let game = new Phaser.Game(config);
+  // Start game
+  new Phaser.Game(config);
 }
 
 window.onload = main;
