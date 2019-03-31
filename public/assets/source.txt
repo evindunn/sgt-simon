@@ -1,0 +1,2 @@
+character: custom
+map tiles: https://opengameart.org/content/nature-tileset
