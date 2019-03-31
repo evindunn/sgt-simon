@@ -1,5 +1,5 @@
 function preload() {
-  this.load.spritesheet("player", "/img/Character.jpg", { frameWidth: 0, frameHeight: 0 });
+  this.load.spritesheet("player", "/img/character.png", { frameWidth: 48, frameHeight: 48 });
 }
 
 function create() {
